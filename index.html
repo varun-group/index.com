@@ -109,6 +109,19 @@
     50% { transform: scale(1.1); box-shadow: 0 0 20px rgba(0,0,0,0.8);}
     100% { transform: scale(1); box-shadow: 0 0 12px rgba(0,0,0,0.6);}
   }
+
+.tap-controls {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  z-index: 20; /* above media, below form/buttons */
+}
+.tap-controls > div {
+  flex: 1;
+}
 </style>
 </head>
 <body>
@@ -125,7 +138,7 @@
     <div class="logo-overlay"><img src="varun.png" alt="Logo"></div>
   </div>
   <div class="media-slide">
-    <video src="a.mp4" autoplay muted></video>
+    <video src="a.mp4" autoplay controls></video>
     <div class="logo-overlay"><img src="varun.png" alt="Logo"></div>
   </div>
  <div class="media-slide">
@@ -155,15 +168,15 @@
     <img src="9.png" alt="Slide 1">
   </div>
   <div class="media-slide">
-    <video src="b.mp4" autoplay muted></video>
+    <video src="b.mp4" autoplay controls></video>
     <div class="logo-overlay"><img src="varun.png" alt="Logo"></div>
   </div>
   <div class="media-slide">
-    <video src="c.mp4" autoplay muted></video>
+    <video src="c.mp4" autoplay controls></video>
     <div class="logo-overlay"><img src="varun.png" alt="Logo"></div>
   </div>
   <div class="media-slide">
-    <video src="d.mp4" autoplay muted></video>
+    <video src="d.mp4" autoplay controls></video>
     <div class="logo-overlay"><img src="varun.png" alt="Logo"></div>
   </div>
 </div>
@@ -183,33 +196,92 @@
 </form>
 
 <div class="floating-call" onclick="askCallLocation()">☎</div>
-
+<div id="callDropdown" style="display:none; position:fixed; bottom:90px; right:20px; background:white; color:black; border-radius:8px; padding:10px; z-index:1000;">
+  <label>Select Location:</label>
+  <select id="callSelect">
+    <option value="">--Choose--</option>
+    <option value="SIRIPURAM">SIRIPURAM</option>
+    <option value="100FT RING ROAD-2S">100FT RING ROAD-2S</option>
+    <option value="ADAVIVARAM-2S(NEXA)">ADAVIVARAM-2S(NEXA)</option>
+  </select>
+  <button onclick="makeCall()">Call</button>
+</div>
+<!-- Tap areas for media control -->
+<div class="tap-controls">
+  <div id="tapLeft"></div>
+  <div id="tapCenter"></div>
+  <div id="tapRight"></div>
+</div>
 <script>
 let slideIndex = 0;
 let slides = document.querySelectorAll('.media-slide');
 let freeze = false;
+let slideTimer = null;
 
 function showSlides() {
   if (freeze) return;
-  slides.forEach(s => s.style.display = 'none');
+
+  slides.forEach(s => {
+    s.style.display = 'none';
+    let v = s.querySelector('video');
+    if(v) { v.pause(); v.currentTime=0; }
+  });
+
   slideIndex = (slideIndex+1)%slides.length;
   let current = slides[slideIndex];
   current.style.display = 'block';
+
   let video = current.querySelector('video');
   if(video){
-    video.currentTime=0;
     video.play();
-    video.onended = () => setTimeout(showSlides, 500);
+    video.onended = () => { slideTimer = setTimeout(showSlides, 500); }
   } else {
-    setTimeout(showSlides, 2000);
+    slideTimer = setTimeout(showSlides, 5000);
   }
 }
+
+// tap to freeze / unfreeze
 slides.forEach(s=>{
-  s.addEventListener('touchstart', ()=>freeze=true);
-  s.addEventListener('touchend', ()=>{freeze=false; showSlides();});
+  s.addEventListener('touchstart', ()=>{
+    freeze=true;
+    if (slideTimer) clearTimeout(slideTimer);
+  });
+  s.addEventListener('touchend', ()=>{
+    freeze=false;
+    showSlides();
+  });
 });
+
+// tapLeft: go previous
+document.getElementById('tapLeft').addEventListener('click', () => {
+  if (slideTimer) clearTimeout(slideTimer);
+  slideIndex = (slideIndex - 2 + slides.length) % slides.length;
+  showSlides();
+});
+
+// tapRight: go next
+document.getElementById('tapRight').addEventListener('click', () => {
+  if (slideTimer) clearTimeout(slideTimer);
+  showSlides();
+});
+
+// tapCenter: pause/resume current video
+document.getElementById('tapCenter').addEventListener('click', () => {
+  let current = slides[slideIndex];
+  let video = current.querySelector('video');
+  if(video){
+    if(video.paused) {
+      video.play();
+    } else {
+      video.pause();
+      if (slideTimer) clearTimeout(slideTimer);
+    }
+  }
+});
+
 showSlides();
 
+// booking form as before:
 document.getElementById('bookingForm').addEventListener('submit', function(e){
   e.preventDefault();
   let reg = this.reg.value;
@@ -224,16 +296,22 @@ document.getElementById('bookingForm').addEventListener('submit', function(e){
   let numbers = {"SIRIPURAM":"9866881455","100FT RING ROAD-2S":"7032425909","ADAVIVARAM-2S(NEXA)":"7799155347"};
   let msg = `Booking Request:\nReg: ${reg}\nLocation: ${loc}\nDate: ${date}`;
   window.open(`https://wa.me/${numbers[loc]}?text=${encodeURIComponent(msg)}`);
+  this.reset();
 });
 
+// call dropdown as before:
 function askCallLocation(){
-  let loc = prompt("Enter Location:\nSIRIPURAM\n100FT RING ROAD-2S\nADAVIVARAM-2S(NEXA)");
-  let numbers = {"SIRIPURAM":"9866881455","100FT RING ROAD-2S":"7032425909","ADAVIVARAM-2S(NEXA)":"7799155347"};
+  document.getElementById("callDropdown").style.display = "block";
+}
+function makeCall(){
+  const loc = document.getElementById("callSelect").value;
+  const numbers = {"SIRIPURAM":"9866881455","100FT RING ROAD-2S":"7032425909","ADAVIVARAM-2S(NEXA)":"7799155347"};
   if(numbers[loc]){
     if(confirm("Call " + loc + "?")) window.location.href='tel:'+numbers[loc];
   } else {
-    alert("Invalid Location.");
+    alert("Please select a location.");
   }
+  document.getElementById("callDropdown").style.display = "none";
 }
 </script>
 
