@@ -117,10 +117,16 @@
   width: 100%;
   height: 100%;
   display: flex;
-  z-index: 20; /* above media, below form/buttons */
+  z-index: 20; /* just above media */
 }
+
 .tap-controls > div {
   flex: 1;
+}
+.tap-left,
+.tap-center,
+.tap-right {
+  /* Can be used for targeting JS separately */
 }
 </style>
 </head>
@@ -132,52 +138,117 @@
   <div class="media-slide">
     <img src="1.png" alt="Slide 1">
     <div class="logo-overlay"><img src="varun.png" alt="Logo"></div>
+  <div class="tap-controls">
+    <div class="tap-left"></div>
+    <div class="tap-center"></div>
+    <div class="tap-right"></div>
   </div>
+</div>
   <div class="media-slide">
     <img src="2.png" alt="Slide 2">
     <div class="logo-overlay"><img src="varun.png" alt="Logo"></div>
+  <div class="tap-controls">
+    <div class="tap-left"></div>
+    <div class="tap-center"></div>
+    <div class="tap-right"></div>
   </div>
+</div>
   <div class="media-slide">
     <video src="a.mp4" autoplay controls></video>
     <div class="logo-overlay"><img src="varun.png" alt="Logo"></div>
+  <div class="tap-controls">
+    <div class="tap-left"></div>
+    <div class="tap-center"></div>
+    <div class="tap-right"></div>
   </div>
+</div>
  <div class="media-slide">
     <img src="3.png" alt="Slide 1">
     <div class="logo-overlay"><img src="varun.png" alt="Logo"></div>
+  <div class="tap-controls">
+    <div class="tap-left"></div>
+    <div class="tap-center"></div>
+    <div class="tap-right"></div>
   </div>
+</div>
   <div class="media-slide">
     <img src="4.png" alt="Slide 1">
     <div class="logo-overlay"><img src="varun1.png" alt="Logo"></div>
+  <div class="tap-controls">
+    <div class="tap-left"></div>
+    <div class="tap-center"></div>
+    <div class="tap-right"></div>
   </div>
+</div>
   <div class="media-slide">
     <img src="5.png" alt="Slide 1">
     <div class="logo-overlay"><img src="varun1.png" alt="Logo"></div>
+  <div class="tap-controls">
+    <div class="tap-left"></div>
+    <div class="tap-center"></div>
+    <div class="tap-right"></div>
   </div>
+</div>
   <div class="media-slide">
     <img src="6.png" alt="Slide 1">
     <div class="logo-overlay"><img src="varun1.png" alt="Logo"></div>
+  <div class="tap-controls">
+    <div class="tap-left"></div>
+    <div class="tap-center"></div>
+    <div class="tap-right"></div>
   </div>
+</div>
   <div class="media-slide">
     <img src="7.png" alt="Slide 1">
     <div class="logo-overlay"><img src="varun1.png" alt="Logo"></div>
+  <div class="tap-controls">
+    <div class="tap-left"></div>
+    <div class="tap-center"></div>
+    <div class="tap-right"></div>
   </div>
+</div>
   <div class="media-slide">
     <img src="8.png" alt="Slide 1">
+  <div class="tap-controls">
+    <div class="tap-left"></div>
+    <div class="tap-center"></div>
+    <div class="tap-right"></div>
   </div>
+</div>
   <div class="media-slide">
     <img src="9.png" alt="Slide 1">
+  <div class="tap-controls">
+    <div class="tap-left"></div>
+    <div class="tap-center"></div>
+    <div class="tap-right"></div>
   </div>
+</div>
   <div class="media-slide">
     <video src="b.mp4" autoplay controls></video>
     <div class="logo-overlay"><img src="varun.png" alt="Logo"></div>
+  <div class="tap-controls">
+    <div class="tap-left"></div>
+    <div class="tap-center"></div>
+    <div class="tap-right"></div>
   </div>
+</div>
   <div class="media-slide">
     <video src="c.mp4" autoplay controls></video>
     <div class="logo-overlay"><img src="varun.png" alt="Logo"></div>
+  <div class="tap-controls">
+    <div class="tap-left"></div>
+    <div class="tap-center"></div>
+    <div class="tap-right"></div>
   </div>
+</div>
   <div class="media-slide">
     <video src="d.mp4" autoplay controls></video>
     <div class="logo-overlay"><img src="varun.png" alt="Logo"></div>
+  </div>
+  <div class="tap-controls">
+    <div class="tap-left"></div>
+    <div class="tap-center"></div>
+    <div class="tap-right"></div>
   </div>
 </div>
 <form id="bookingForm">
@@ -205,12 +276,6 @@
     <option value="ADAVIVARAM-2S(NEXA)">ADAVIVARAM-2S(NEXA)</option>
   </select>
   <button onclick="makeCall()">Call</button>
-</div>
-<!-- Tap areas for media control -->
-<div class="tap-controls">
-  <div id="tapLeft"></div>
-  <div id="tapCenter"></div>
-  <div id="tapRight"></div>
 </div>
 <script>
 let slideIndex = 0;
@@ -252,31 +317,34 @@ slides.forEach(s=>{
   });
 });
 
-// tapLeft: go previous
-document.getElementById('tapLeft').addEventListener('click', () => {
-  if (slideTimer) clearTimeout(slideTimer);
-  slideIndex = (slideIndex - 2 + slides.length) % slides.length;
-  showSlides();
+document.querySelectorAll('.tap-left').forEach(el => {
+  el.addEventListener('click', () => {
+    if (slideTimer) clearTimeout(slideTimer);
+    slideIndex = (slideIndex - 2 + slides.length) % slides.length;
+    showSlides();
+  });
 });
 
-// tapRight: go next
-document.getElementById('tapRight').addEventListener('click', () => {
-  if (slideTimer) clearTimeout(slideTimer);
-  showSlides();
+document.querySelectorAll('.tap-right').forEach(el => {
+  el.addEventListener('click', () => {
+    if (slideTimer) clearTimeout(slideTimer);
+    showSlides();
+  });
 });
 
-// tapCenter: pause/resume current video
-document.getElementById('tapCenter').addEventListener('click', () => {
-  let current = slides[slideIndex];
-  let video = current.querySelector('video');
-  if(video){
-    if(video.paused) {
-      video.play();
-    } else {
-      video.pause();
-      if (slideTimer) clearTimeout(slideTimer);
+document.querySelectorAll('.tap-center').forEach(el => {
+  el.addEventListener('click', () => {
+    let current = slides[slideIndex];
+    let video = current.querySelector('video');
+    if (video) {
+      if (video.paused) {
+        video.play();
+      } else {
+        video.pause();
+        if (slideTimer) clearTimeout(slideTimer);
+      }
     }
-  }
+  });
 });
 
 showSlides();
