@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Varun Motors Service Centers</title>
+<style>
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    color: #fff;
+  }
+  header {
+    text-align: center;
+    padding: 1rem;
+    font-size: 2rem;
+    font-weight: bold;
+    background: rgba(0,0,0,0.3);
+  }
+  .media-slider {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
+  .media-slide {
+    position: relative;
+    display: none;
+    animation: fade 1s;
+  }
+  @keyframes fade { from {opacity: .4} to {opacity: 1} }
+  .media-slide img, .media-slide video {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+  }
+.logo-overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 45px;    /* adjust size if needed */
+  height: auto;
+  background: none;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+}
+.logo-overlay img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+   form {
+    background: rgba(255,255,255,0.1);
+    padding: 1rem;
+    margin: 1rem auto;
+    border-radius: 10px;
+    max-width: 400px;
+  }
+  label {
+    display: block;
+    margin: 0.6rem 0 0.3rem;
+    font-weight: 500;
+  }
+  form input, form select {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.7rem;
+    margin-bottom: 1rem;
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 6px;
+    font-size: 1rem;
+    background: rgba(255,255,255,0.9);
+    color: #000;
+  }
+  button {
+    width: 100%;
+    padding: 0.8rem;
+    border: none;
+    border-radius: 6px;
+    background: linear-gradient(45deg, #00c6ff, #0072ff);
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  button:hover { background: linear-gradient(45deg, #0072ff, #00c6ff); }
+  .floating-call {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #00c6ff;
+    color: white;
+    border-radius: 50%;
+    width: 65px;
+    height: 65px;
+    text-align: center;
+    font-size: 28px;
+    line-height: 65px;
+    cursor: pointer;
+    box-shadow: 0 0 12px rgba(0,0,0,0.6);
+    animation: pulse 1.5s infinite;
+    z-index: 999;
+  }
+  @keyframes pulse {
+    0% { transform: scale(1); box-shadow: 0 0 12px rgba(0,0,0,0.6);}
+    50% { transform: scale(1.1); box-shadow: 0 0 20px rgba(0,0,0,0.8);}
+    100% { transform: scale(1); box-shadow: 0 0 12px rgba(0,0,0,0.6);}
+  }
+</style>
+</head>
+<body>
+
+<header>Varun Motors Service Booking</header>
+
+<div class="media-slider" id="slider">
+  <div class="media-slide">
+    <img src="1.png" alt="Slide 1">
+    <div class="logo-overlay"><img src="varun.png" alt="Logo"></div>
+  </div>
+  <div class="media-slide">
+    <img src="2.png" alt="Slide 2">
+    <div class="logo-overlay"><img src="varun.png" alt="Logo"></div>
+  </div>
+  <div class="media-slide">
+    <video src="a.mp4" autoplay muted></video>
+    <div class="logo-overlay"><img src="varun.png" alt="Logo"></div>
+  </div>
+ <div class="media-slide">
+    <img src="3.png" alt="Slide 1">
+    <div class="logo-overlay"><img src="varun.png" alt="Logo"></div>
+  </div>
+  <div class="media-slide">
+    <img src="4.png" alt="Slide 1">
+    <div class="logo-overlay"><img src="varun1.png" alt="Logo"></div>
+  </div>
+  <div class="media-slide">
+    <img src="5.png" alt="Slide 1">
+    <div class="logo-overlay"><img src="varun1.png" alt="Logo"></div>
+  </div>
+  <div class="media-slide">
+    <img src="6.png" alt="Slide 1">
+    <div class="logo-overlay"><img src="varun1.png" alt="Logo"></div>
+  </div>
+  <div class="media-slide">
+    <img src="7.png" alt="Slide 1">
+    <div class="logo-overlay"><img src="varun1.png" alt="Logo"></div>
+  </div>
+  <div class="media-slide">
+    <img src="8.png" alt="Slide 1">
+  </div>
+  <div class="media-slide">
+    <img src="9.png" alt="Slide 1">
+  </div>
+  <div class="media-slide">
+    <video src="b.mp4" autoplay muted></video>
+    <div class="logo-overlay"><img src="varun.png" alt="Logo"></div>
+  </div>
+  <div class="media-slide">
+    <video src="c.mp4" autoplay muted></video>
+    <div class="logo-overlay"><img src="varun.png" alt="Logo"></div>
+  </div>
+  <div class="media-slide">
+    <video src="d.mp4" autoplay muted></video>
+    <div class="logo-overlay"><img src="varun.png" alt="Logo"></div>
+  </div>
+</div>
+<form id="bookingForm">
+  <label>Registration Number</label>
+  <input type="text" name="reg" placeholder="E.g. AP31XX0000" required>
+  <label>Location</label>
+  <select name="loc" required>
+    <option value="">Select Location</option>
+    <option value="SIRIPURAM">SIRIPURAM</option>
+    <option value="100FT RING ROAD-2S">100FT RING ROAD-2S</option>
+    <option value="ADAVIVARAM-2S(NEXA)">ADAVIVARAM-2S(NEXA)</option>
+  </select>
+  <label>Servicing Date</label>
+  <input type="date" name="date" required>
+  <button type="submit">Submit Booking</button>
+</form>
+
+<div class="floating-call" onclick="askCallLocation()">☎</div>
+
+<script>
+let slideIndex = 0;
+let slides = document.querySelectorAll('.media-slide');
+let freeze = false;
+
+function showSlides() {
+  if (freeze) return;
+  slides.forEach(s => s.style.display = 'none');
+  slideIndex = (slideIndex+1)%slides.length;
+  let current = slides[slideIndex];
+  current.style.display = 'block';
+  let video = current.querySelector('video');
+  if(video){
+    video.currentTime=0;
+    video.play();
+    video.onended = () => setTimeout(showSlides, 500);
+  } else {
+    setTimeout(showSlides, 2000);
+  }
+}
+slides.forEach(s=>{
+  s.addEventListener('touchstart', ()=>freeze=true);
+  s.addEventListener('touchend', ()=>{freeze=false; showSlides();});
+});
+showSlides();
+
+document.getElementById('bookingForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  let reg = this.reg.value;
+  let loc = this.loc.value;
+  let date = this.date.value;
+  fetch('https://docs.google.com/forms/d/e/1FAIpQLSclNAzwRxVqaqep96yfCaDUb5Wu5yu13-roKl8kEfnp44QOyg/formResponse', {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    body: `entry.1666870165=${encodeURIComponent(reg)}&entry.1311418705=${encodeURIComponent(loc)}&entry.587021249=${encodeURIComponent(date)}`
+  });
+  let numbers = {"SIRIPURAM":"9866881455","100FT RING ROAD-2S":"7032425909","ADAVIVARAM-2S(NEXA)":"7799155347"};
+  let msg = `Booking Request:\nReg: ${reg}\nLocation: ${loc}\nDate: ${date}`;
+  window.open(`https://wa.me/${numbers[loc]}?text=${encodeURIComponent(msg)}`);
+});
+
+function askCallLocation(){
+  let loc = prompt("Enter Location:\nSIRIPURAM\n100FT RING ROAD-2S\nADAVIVARAM-2S(NEXA)");
+  let numbers = {"SIRIPURAM":"9866881455","100FT RING ROAD-2S":"7032425909","ADAVIVARAM-2S(NEXA)":"7799155347"};
+  if(numbers[loc]){
+    if(confirm("Call " + loc + "?")) window.location.href='tel:'+numbers[loc];
+  } else {
+    alert("Invalid Location.");
+  }
+}
+</script>
+
+</body>
+</html>
